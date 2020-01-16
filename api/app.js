@@ -3,6 +3,8 @@ var express = require('express');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var cors = require('cors');
+const swaggerUI = require('swagger-ui-express');
+const swaggerSpec = require('./swagger');
 
 var indexRouter = require('./routes/index');
 
@@ -13,6 +15,8 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(bodyParser.json());
 app.use(cors());
+
+app.use('/api-docs', swaggerUI.serve, swaggerUI.setup(swaggerSpec));
 
 app.use('/', indexRouter);
 
