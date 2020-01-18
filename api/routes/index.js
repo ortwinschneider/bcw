@@ -5,9 +5,34 @@ var fs = require('fs');
 
 var file_path = process.env.FILE_PATH || '../data/db.json';
 
-/* GET return welcome page. */
+/**
+ * @swagger
+ *
+ * definitions:
+ *   Player:
+ *     type: object
+ *     required:
+ *       - id
+ *       - name
+ *       - isPlaying
+ *     properties:
+ *       id:
+ *         type: integer
+ *         format: int64
+ *       name:
+ *         type: string
+ *       isPlaying:
+ *         type: boolean
+ *       email:
+ *         type: string
+ *       phone:
+ *         type: string
+ */
+
+
+/* redirect to /api-docs endpoint. */
 router.get('/', function (request, response, next) {
-  response.send('BCW API Server');
+  response.redirect('/api-docs');
 });
 
 /**
@@ -21,6 +46,10 @@ router.get('/', function (request, response, next) {
  *     responses:
  *       200:
  *         description: Success
+ *         schema:
+ *           type: array
+ *           items:
+ *             $ref: '#/definitions/Player'
  */
 router.get('/players', function (request, response, next) {
   let players = readData();
@@ -57,9 +86,18 @@ router.put('/players', function (request, response, next) {
  *     description: Add new player 
  *     produces:
  *       - application/json
+ *     parameters:
+ *       - name: player
+ *         description: player object
+ *         in:  body
+ *         required: true
+ *         type: string
+ *         schema:
+ *           $ref: '#/definitions/Player'
  *     responses:
  *       200:
  *         description: Success
+ * 
  */
 router.post('/players', function (request, response, next) {
   let players = readData();
